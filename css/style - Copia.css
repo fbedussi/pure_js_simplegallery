@@ -1,0 +1,308 @@
+/* General Blueprint Style */
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:700);
+
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?s02zgy');
+	src:url('fonts/icomoon.eot?#iefixs02zgy') format('embedded-opentype'),
+		url('fonts/icomoon.woff?s02zgy') format('woff'),
+		url('fonts/icomoon.ttf?s02zgy') format('truetype'),
+		url('fonts/icomoon.svg?s02zgy#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-facebook:before {
+	content: "\e600";
+}
+.icon-instagram:before {
+	content: "\e601";
+}
+.icon-arrow-right:before {
+	content: "\e602";
+}
+
+
+*, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+body, html {padding: 0; margin: 0;}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before, .clearfix:after { content: " "; display: table; }
+.clearfix:after { clear: both; }
+
+body {
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    color: #2b271b;
+    background: #fff;
+    font-size: 1.3em;
+    font-weight: 300;
+}
+
+ol, ul {
+	counter-reset:li; /* Initiate a counter */
+	margin-left:0; /* Remove the default left margin */
+	padding-left:0; /* Remove the default left padding */
+}
+ol > li, ul > li {
+	position:relative; /* Create a positioning context */
+	margin:0 0 0.3em 2.5em; /* Give each list item a left margin to make room for the numbers */
+	list-style:none; /* Disable the normal item numbering */
+}
+ol > li:before, ul > li:before {
+	content:counter(li); /* Use the counter as content */
+	counter-increment:li; /* Increment the counter by 1 */
+	/* Position and style the number */
+	position:absolute;
+	left:-2.5em;
+	top: -0.2em;
+	width:3em;
+	font-size: 1.5em;
+	/* Some space between the number and the content in browsers that support
+	   generated content but not positioning it (Camino 2 is one example) */
+	color:#008F33;
+	font-weight:bold;
+	text-align:center;
+}
+
+ul > li:before {
+	font-family: 'icomoon';
+	content: "\e602";
+	top:0;
+}
+
+a {
+	color: #008F33;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #0ea1ae;
+}
+
+strong {
+	color: #008F33;
+	font-weight: 400;
+}
+
+
+.container > header {
+	width: 90%;
+	max-width: 69em;
+	margin: 0 auto;
+	padding: 2.875em 1.875em 1.875em;
+}
+
+.container > header > img {
+	width: 270px;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+	display: block;
+}
+
+.credits {
+	font-size: 60%;
+	height: 2em;
+}
+
+.credits img, .credits a {
+	vertical-align: middle;
+	height: 100%;
+	
+}
+
+.cbp-so-side-right .credits img, .cbp-so-side-right .credits a {
+	margin-right: 1.3em;
+}
+
+.cbp-so-side-left .credits img, .cbp-so-side-left .credits a {
+	margin-left: 1.3em;
+}
+/*
+footer {
+	font-size: 50%;
+	text-align: left;
+	display: table;
+	position: relative;
+}
+.cbp-so-side-left footer {
+	float: right;
+}
+footer div {
+	display: table-cell;
+	vertical-align: bottom;
+	height: 120px;
+	height: calc(80px + 2em);
+	padding-right: 3em;
+}
+footer div:last-of-type {
+	padding-right: 0;
+}
+footer div p {
+	position: absolute;
+	top: 0;
+	margin: 0 0 1em 0;
+}
+.cbp-so-side-left footer img {
+	float: none;
+	display: table-cell;
+	margin-right: 1em;
+	max-height: 100%;
+}
+
+.cbp-so-side-left footer img:last-of-type {
+	margin-right: 0;
+}
+*/
+footer {
+	font-size: 50%;
+}
+.footer-wrapper {
+	position: relative;
+	height: 120px;
+	height: calc(80px + 2em);
+	display: inline-block;
+	text-align: left;
+	margin: 1em 0 0 3em;
+}
+.footer-wrapper:first-child {
+	margin-left: 0;
+}
+.footer-wrapper p {
+	margin: 0 0 1em 0;
+}
+.logo-wrapper {
+	height: 80px;
+	display: table-cell;
+	vertical-align: bottom;
+}
+.cbp-so-side-left .logo-wrapper img {
+	float: none;
+}
+
+.logo-wrapper img {
+	max-height: 100%;
+	margin-right: 2em;
+}
+
+.logo-wrapper img:last-of-type {
+	margin-right: 0;
+}
+
+
+
+/*.container > header nav {
+	float: right;
+	text-align: center;
+}
+
+.container > header nav a {
+	display: inline-block;
+	position: relative;
+	text-align: left;
+	width: 2.5em;
+	height: 2.5em;
+	background: #47a3da;
+	border-radius: 50%;
+	margin: 0 0.1em;
+	border: 4px solid #fff;
+}
+
+.container > header nav a > span {
+	display: none;
+}
+
+.container > header nav a:hover:before {
+	content: attr(data-info);
+	color: #fff;
+	position: absolute;
+	width: 600%;
+	top: 120%;
+	text-align: right;
+	right: 0;
+	pointer-events: none;
+}
+
+.container > header nav a:hover {
+	background: #fff;
+}
+
+.bp-icon:after {
+	font-family: 'bpicons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-align: center;
+	color: #fff;
+	-webkit-font-smoothing: antialiased;
+}
+
+.container > header nav .bp-icon:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	line-height: 2;
+	text-indent: 0;
+}
+
+.container > header nav a:hover:after {
+	color: #47a3da;
+}
+
+.bp-icon-next:after {
+	content: "\e000";
+}
+.bp-icon-drop:after {
+	content: "\e001";
+}
+.bp-icon-archive:after {
+	content: "\e002";
+}
+.bp-icon-about:after {
+	content: "\e003";
+}
+.bp-icon-prev:after {
+	content: "\e004";
+}*/
+
+@media screen and (max-width: 55em) {
+
+	.container > header h1,
+	.container > header nav {
+		float: none;
+	}
+
+	.container > header > span,
+	.container > header h1 {
+		text-align: center;
+	}
+
+	.container > header nav {
+		margin: 0 auto;
+	}
+
+	.container > header > span {
+		text-indent: 30px;
+	}
+	
+	
+}
