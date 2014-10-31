@@ -48,7 +48,7 @@
 			font-size: 200%;
 			color: #fff;
 			color: rgba(255,255,255,0.5);
-			transition: all 0.5s;
+			transition: all 0.2s;
 		}
 		.prev {
 			left: 0;
@@ -115,9 +115,103 @@
 		}
 		.big-picture::before {
 			text-align: center;
-			content: "Loading...";
+			content: "\e800";
 			z-index: -1;
+			font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+   -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+  display: inline-block;
 		}
+		
+
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@-ms-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -moz-transform: rotate(359deg);
+    -o-transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+		
 		.gallery-wrapper nav .active::before {
 			background-color: rgba(255,255,255,0.5);
 		}
@@ -130,6 +224,9 @@
 			display: block;
 			color: #fff;
 			font-size: 200%;
+		}
+		.gallery-wrapper nav .active a:hover::before {
+			content: "";
 		}
 		
     </style>
@@ -223,6 +320,8 @@
 			loadPicture(prevLink);
 		}
 		
+		var autoPlay = false, interval = 4000;
+		
 		window.onload = function() {
 			//get galleries and define variables
 			var galleries = document.getElementsByClassName("gallery-wrapper"), gallery, links, index, index2;
@@ -258,6 +357,10 @@
 				}
 				prev.onclick = function() {
 					prevPicture(gallery);
+				}
+				
+				if (autoPlay) {
+					window.setInterval(function(){nextPicture(gallery)}, interval);
 				}
 			}
 		}
