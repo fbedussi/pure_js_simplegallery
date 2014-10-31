@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Gallery</title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="css/fontello.css">
+	<link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/fontello-ie7.css"><![endif]-->
+    
+    <style>
+		.gallery-wrapper {
+			width: 800px;
+			height: 480px;
+			position: relative;
+		}
+		.gellery-wrapper * {
+			box-sizing: border-box;
+		}
+		.big-picture {
+			width: 80%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			overflow: hidden;
+			margin: 0;
+			padding: 0;
+		}
+		.curtain {
+			display: none;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			background-color: rgba(255,255,255,0.5);
+		}
+		.prev-next {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		.prev, .next {
+			position: absolute;
+			height: 100%;
+			width: 20%;
+			text-align: center;
+			font-size: 200%;
+			color: #fff;
+			color: rgba(255,255,255,0.5);
+		}
+		.prev {
+			left: 0;
+		}
+		.next {
+			right: 0;
+		}
+		.prev-next a {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+		.prev-next i {
+			display: block;
+			position: absolute;
+			width: 100%;
+			left: 0;
+			top: 45%;
+			top: calc(50% - 0.5em);
+		}
+		.prev:hover, .next:hover {
+			background-color: #fff;
+			color: #aaa;
+			background-color: rgba(255,255,255,0.5);
+			color: rgba(0,0,0,0.5);
+		}
+		.big-picture img, .gallery-wrapper nav img {
+			width: 100%;
+			height: auto;
+		}
+		.gallery-wrapper nav {
+			width: 20%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+		.gallery-wrapper nav ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			height: 100%;
+		}
+		.gallery-wrapper nav li {
+			overflow: hidden;
+			width: 100%;
+			height: 20%;
+			position: relative;
+			cursor: pointer;
+		}
+		.gallery-wrapper nav a {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+		.gallery-wrapper nav a::before, .gallery-wrapper nav .active::before, .big-picture::before {
+			box-sizing: border-box;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			content: " ";
+		}
+		.big-picture::before {
+			text-align: center;
+			content: "Loading...";
+			z-index: -1;
+		}
+		.gallery-wrapper nav .active::before {
+			background-color: rgba(255,255,255,0.5);
+		}
+		.gallery-wrapper nav a:hover::before {
+			content: '\e801';
+			font-family: fontello;
+			text-align: center;
+			top: 45%;
+			top: calc(50% - 0.5em);
+			display: block;
+			color: #fff;
+			font-size: 200%;
+		}
+		
+    </style>
+    <script>
+		"use strict";
+		
+		if (!document.getElementsByClassName) { //if this function is not defined
+			document.getElementsByClassName = function(className) { //define it 
+				var elArray = [];
+				var tmp = document.getElementsByTagName("*");
+				var regex = new RegExp("(^|\\s)" + className + "(\\s|$)");
+				for (var i = 0; i < tmp.length; i++) {
+					if (regex.test(tmp[i].className)) {
+						elArray.push(tmp[i]);
+					}
+				}
+				return elArray;
+			}
+		}
+		
+		function loadPicture(el) {
+			// get the target div for the big picture
+			var targetFrame = el.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('figure')[0].getElementsByTagName('img')[0],
+				curtain = el.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('figure')[0].getElementsByTagName('div')[0],
+				linkURL = el.getAttribute("href");
+			
+			
+			curtain.style.display = "block";
+			//set the SRC and ALT attributes
+			//targetFrame.src = "";
+			targetFrame.src = linkURL;
+			targetFrame.alt = el.childNodes[1].alt;//img is the second node, the fist is text
+			
+			targetFrame.onload = function() {
+				curtain.style.display = "none";	
+			}
+			
+			
+			//revove the "active" class
+			var links = el.parentNode.parentNode.getElementsByTagName("li"), index;
+			for (index = 0; index < links.length; ++index) {
+				links[index].className="";
+			 }
+			
+			//add the active class to the current thumb
+			el.parentNode.className = "active";
+		}
+		
+		//check if the next sibling node is an element node
+		function getNextSibling(n)
+		{
+			var x = n.nextSibling;
+			while (x && x.nodeType != 1)
+			  {
+				x=x.nextSibling;
+			  }
+			return x;
+		}
+		
+		//check if the previous sibling node is an element node
+		function getPrevSibling(n)
+		{
+			var x = n.previousSibling;
+			while (x && x.nodeType!=1)
+			  {
+				x = x.previousSibling;
+			  }
+			return x;
+		}
+		
+		function nextPicture(gallery) {
+			var nextLink = getNextSibling(gallery.getElementsByClassName("active")[0]);
+			if (nextLink) {
+				nextLink = nextLink.getElementsByTagName('a')[0];
+			} else {
+				nextLink = gallery.getElementsByTagName('nav')[0].getElementsByTagName('a')[0];
+			}
+			loadPicture(nextLink);
+		}
+		
+		function prevPicture(gallery) {
+			var prevLink = getPrevSibling(gallery.getElementsByClassName("active")[0]);
+			if (prevLink) {
+				prevLink = prevLink.getElementsByTagName('a')[0];
+			} else {
+				var links = gallery.getElementsByTagName('nav')[0].getElementsByTagName('a'),
+					lastLink;
+				lastLink = links.length - 1;
+				prevLink = links[lastLink];
+			}
+			loadPicture(prevLink);
+		}
+		
+		window.onload = function() {
+			//get galleries and define variables
+			var galleries = document.getElementsByClassName("gallery-wrapper"), gallery, links, index, index2;
+			
+			//for every gallery
+			for (index = 0; index < galleries.length; ++index) {
+				gallery = galleries[index];
+				
+				//get the thumb links
+				links = gallery.getElementsByTagName("nav")[0].getElementsByTagName("a");
+				//for every link
+				for (index2 = 0; index2 < links.length; ++index2) {
+					//on click
+					links[index2].onclick = function(event){
+						//load the big picture
+						loadPicture(this);
+						
+						//prevent default
+						if(event.preventDefault) {
+							event.preventDefault();
+						} else { //IE
+							event.returnValue = false;
+						}
+					}
+				}
+				
+				//get the next and prev link
+				var next = gallery.getElementsByClassName("next")[0], 
+					prev = gallery.getElementsByClassName("prev")[0];
+				
+				next.onclick = function() {
+					nextPicture(gallery);
+				}
+				prev.onclick = function() {
+					prevPicture(gallery);
+				}
+			}
+		}
+    </script>
+</head>
+
+<body>
+
+	<div class="gallery-wrapper">
+		<figure class="big-picture" >
+			<div class="curtain"></div>
+			<div class="prev-next">
+				<div class="prev">
+					<a><i class="icon-left-open"></i></a>
+				</div>
+				<div class="next">
+					<a><i class="icon-right-open"></i></a>
+				</div>
+			</div>
+			<img src="images/bimbo.jpg" alt="Gli ecosistemi mobili attivano bologna - La partecipazione dei bambini">
+		</figure>
+		<nav>
+			<ul>
+				<li class="active">
+					<a target="_blank" href="images/bimbo.jpg">
+						<img src="images/thumbs/bimbo.jpg" alt="Gli ecosistemi mobili attivano bologna - La partecipazione dei bambini">
+					</a>
+				</li>
+				<li>
+					<a target="_blank" href="images/bologna.jpg">
+						<img src="images/thumbs/bologna.jpg" alt="Gli ecosistemi mobili attivano bologna - Dettaglio">
+					</a>
+				</li>
+				<li>
+					<a target="_blank" href="images/spostamento.jpg">
+						<img src="images/thumbs/spostamento.jpg" alt="Gli ecosistemi mobili attivano bologna - Spostamento in città">
+					</a>
+				</li>
+				<li>
+					<a target="_blank" href="images/wifi.jpg">
+						<img src="images/thumbs/wifi.jpg" alt="Gli ecosistemi mobili attivano bologna - Connessione WiFi">
+					</a>
+				</li>
+				<li>
+					<a target="_blank" href="images/accursio.jpg">
+						<img src="images/thumbs/accursio.jpg" alt="Gli ecosistemi mobili attivano bologna - A Palazzo Accursio">
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+
+</body>
+</html>
