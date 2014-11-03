@@ -113,25 +113,29 @@
 			left: 0;
 			content: " ";
 		}
-		.big-picture::before {
-			text-align: center;
-			content: "\e800";
+		.loading {
+			position: absolute;
 			z-index: -1;
+			font-size: 200%;
+			top: 50%;
+			left:50%;
+			top: calc(50% - 0.5em);
+			left: calc(50% - 0.5em);
 			font-family: "fontello";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
- 
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-   -moz-animation: spin 2s infinite linear;
-  -o-animation: spin 2s infinite linear;
-  -webkit-animation: spin 2s infinite linear;
-  animation: spin 2s infinite linear;
-  display: inline-block;
+			font-style: normal;
+			font-weight: normal;
+			speak: none;
+			text-decoration: inherit;
+			width: 1em;
+			 -moz-animation: spin 2s infinite linear;
+			-o-animation: spin 2s infinite linear;
+			-webkit-animation: spin 2s infinite linear;
+			animation: spin 2s infinite linear;
+			display: inline-block;
+		}
+		
+		.loading::before {
+		    content: "\e800";
 		}
 		
 
@@ -250,7 +254,7 @@
 		function loadPicture(el) {
 			// get the target div for the big picture
 			var targetFrame = el.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('figure')[0].getElementsByTagName('img')[0],
-				curtain = el.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('figure')[0].getElementsByTagName('div')[0],
+				curtain = el.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('figure')[0].getElementsByClassName('curtain')[0],
 				linkURL = el.getAttribute("href");
 			
 			
@@ -371,7 +375,7 @@
 
 	<div class="gallery-wrapper">
 		<figure class="big-picture" >
-			<div class="curtain"></div>
+			<div class="loading"></div>
 			<div class="prev-next">
 				<div class="prev">
 					<a><i class="icon-left-open"></i></a>
@@ -380,31 +384,39 @@
 					<a><i class="icon-right-open"></i></a>
 				</div>
 			</div>
+			<!--the img tag is non positioned so it is renderd on bottom of the stack, even if it comes after the prev-next block-->
 			<img src="images/bimbo.jpg" alt="Gli ecosistemi mobili attivano bologna - La partecipazione dei bambini">
+			<div class="curtain"></div>
 		</figure>
 		<nav>
 			<ul>
 				<li class="active">
+					<div class="loading"></div>
 					<a target="_blank" href="images/bimbo.jpg">
+						
 						<img src="images/thumbs/bimbo.jpg" alt="Gli ecosistemi mobili attivano bologna - La partecipazione dei bambini">
 					</a>
 				</li>
 				<li>
+					<div class="loading"></div>
 					<a target="_blank" href="images/bologna.jpg">
 						<img src="images/thumbs/bologna.jpg" alt="Gli ecosistemi mobili attivano bologna - Dettaglio">
 					</a>
 				</li>
 				<li>
+					<div class="loading"></div>
 					<a target="_blank" href="images/spostamento.jpg">
 						<img src="images/thumbs/spostamento.jpg" alt="Gli ecosistemi mobili attivano bologna - Spostamento in città">
 					</a>
 				</li>
 				<li>
+					<div class="loading"></div>
 					<a target="_blank" href="images/wifi.jpg">
 						<img src="images/thumbs/wifi.jpg" alt="Gli ecosistemi mobili attivano bologna - Connessione WiFi">
 					</a>
 				</li>
 				<li>
+					<div class="loading"></div>
 					<a target="_blank" href="images/accursio.jpg">
 						<img src="images/thumbs/accursio.jpg" alt="Gli ecosistemi mobili attivano bologna - A Palazzo Accursio">
 					</a>
