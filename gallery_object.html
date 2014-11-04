@@ -274,47 +274,41 @@
 			return x;
 		}
 		
+		function extend( a, b ) {
+			for( var key in b ) { 
+				if( b.hasOwnProperty( key ) ) {
+					a[key] = b[key];
+				}
+			}
+			return a;
+		}
+
+		
 		//
 		//define object
 		//
-		function Gallery(el) {
-		    //get the thumb links & next and prev link
-		    this.links = el.getElementsByTagName("nav")[0].getElementsByTagName("li");
-		    this.next = el.getElementsByClassName("next")[0];
-		    this.prev = el.getElementsByClassName("prev")[0];
-			
-		    // get the target div for the big picture
-		    this.targetFrame = el.getElementsByTagName('figure')[0].getElementsByTagName('img')[0];
-		    this.curtain = el.getElementsByClassName('curtain')[0];
+		function Gallery(el, options) {
+		  
+		    var defaults = {
+			//get the thumb links & next and prev link
+			links : el.getElementsByTagName("nav")[0].getElementsByTagName("li"),
+			next : el.getElementsByClassName("next")[0],
+			prev : el.getElementsByClassName("prev")[0],
+			    
+			// get the target div for the big picture
+			targetFrame : el.getElementsByTagName('figure')[0].getElementsByTagName('img')[0],
+			curtain : el.getElementsByClassName('curtain')[0]
+		    };
+		    this.options = extend(defaults, options);
 		    
 		    var index,
 			obj = this;
-			
-		    this.setLinks = function(el) {
-			this.links = el;
-			return this;
-		    }
-		    
-		    this.setNext = function(el) {
-			this.next = el;
-			return this;
-		    }
-		    
-		    this.setPrev = function(el) {
-			this.prev = el;
-			return this;
-		    }
-		    
-		    this.setTargetFrame = function(el) {
-			this.targetFrame = el;
-			return this;
-		    }
 		    
 		    //for every link
-		    for (index = 0; index < this.links.length; ++index) {
+		    for (index = 0; index < this.options.links.length; ++index) {
 			    //on click
 			    
-			    this.links[index].getElementsByTagName('a')[0].onclick = function(event){
+			    this.options.links[index].getElementsByTagName('a')[0].onclick = function(event){
 				    
 				    //load the big picture
 				    obj.loadPicture(this);
@@ -328,13 +322,14 @@
 			    }
 		    }
 		    
-		    this.next.onclick = function() {
+		    this.options.next.onclick = function() {
 			    obj.nextPicture();
 		    }
-		    this.prev.onclick = function() {
+		    this.options.prev.onclick = function() {
 			    obj.prevPicture();
 		    }
 		    
+		    //**RILEVARE da class
 		    if (autoPlay) {
 			    //windows or this?
 			    this.setInterval(function(){this.nextPicture()}, interval);
@@ -345,21 +340,20 @@
 			var linkURL = link.getAttribute("href");
 
 			//show the curtain
-			this.curtain.style.display = "block";
+			this.options.curtain.style.display = "block";
 			//set the SRC and ALT attributes
-			//targetFrame.src = "";
-			this.targetFrame.src = linkURL;
-			this.targetFrame.alt = link.childNodes[1].alt;//img is the second node, the fist is text
+			this.options.targetFrame.src = linkURL;
+			this.options.targetFrame.alt = link.childNodes[1].alt;//img is the second node, the fist is text
 			
 			//hide the curtain when the image is loaded
-			this.targetFrame.onload = function() {
-				obj.curtain.style.display = "none";	
+			this.options.targetFrame.onload = function() {
+				obj.options.curtain.style.display = "none";	
 			}
 			
 			//revove the "active" class
-			var links = link.parentNode.parentNode.getElementsByTagName("li"), index;
-			for (index = 0; index < links.length; ++index) {
-				links[index].className="";
+			var index;
+			for (index = 0; index < this.options.links.length; ++index) {
+				this.options.links[index].className="";
 			 }
 			
 			//add the active class to the current thumb
@@ -372,7 +366,7 @@
 			    if (nextLink) {
 				    nextLink = nextLink.getElementsByTagName('a')[0];
 			    } else {
-				    nextLink = el.getElementsByTagName('nav')[0].getElementsByTagName('a')[0];
+				    nextLink = this.options.links[0].getElementsByTagName('a')[0];
 			    }
 			    this.loadPicture(nextLink);
 		    }
@@ -382,10 +376,9 @@
 			    if (prevLink) {
 				    prevLink = prevLink.getElementsByTagName('a')[0];
 			    } else {
-				    var links = el.getElementsByTagName('nav')[0].getElementsByTagName('a'),
-					    lastLink;
-				    lastLink = links.length - 1;
-				    prevLink = links[lastLink];
+				    var lastLink;
+				    lastLink = this.options.links.length - 1;
+				    prevLink = this.options.links[lastLink].getElementsByTagName('a')[0];
 			    }
 			    this.loadPicture(prevLink);
 		    }
@@ -393,7 +386,7 @@
 		    return this;
 		}
 		
-		
+	    
 		var autoPlay = false, interval = 4000;
 		
 		window.onload = function() {
