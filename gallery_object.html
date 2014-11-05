@@ -297,18 +297,18 @@
 			    
 			// get the target div for the big picture
 			targetFrame : el.getElementsByTagName('figure')[0].getElementsByTagName('img')[0],
-			curtain : el.getElementsByClassName('curtain')[0]
+			curtain : el.getElementsByClassName('curtain')[0],
+			interval : 4000
 		    };
+		    
 		    this.options = extend(defaults, options);
 		    
-		    var index,
-			obj = this;
+		    var index,	obj = this;
 		    
 		    //for every link
 		    for (index = 0; index < this.options.links.length; ++index) {
 			    //on click
-			    
-			    this.options.links[index].getElementsByTagName('a')[0].onclick = function(event){
+			    this.options.links[index].onclick = function(event){
 				    
 				    //load the big picture
 				    obj.loadPicture(this);
@@ -329,80 +329,65 @@
 			    obj.prevPicture();
 		    }
 		    
-		    //**RILEVARE da class
-		    if (autoPlay) {
+		    //if the wrapper has "autoplay" class
+		    if ((" " + el.className + " ").replace(/[\t\r\n\f]/g, " ").indexOf( 'autoplay' ) >= 0)  {
 			    //windows or this?
-			    this.setInterval(function(){this.nextPicture()}, interval);
+			    setInterval(function(){obj.nextPicture()}, obj.options.interval);
 		    }
 		    
 		    
 		    this.loadPicture = function (link) {
 			var linkURL = link.getAttribute("href");
+			
+			if (!linkURL) {
+				linkURL = link.getElementsByTagName('a')[0].getAttribute("href");
+			}
 
 			//show the curtain
 			this.options.curtain.style.display = "block";
 			//set the SRC and ALT attributes
 			this.options.targetFrame.src = linkURL;
-			this.options.targetFrame.alt = link.childNodes[1].alt;//img is the second node, the fist is text
+			this.options.targetFrame.alt = link.getElementsByTagName('img')[0].alt;
 			
 			//hide the curtain when the image is loaded
 			this.options.targetFrame.onload = function() {
 				obj.options.curtain.style.display = "none";	
 			}
 			
-			//revove the "active" class
+			//remove the "active" class
 			var index;
 			for (index = 0; index < this.options.links.length; ++index) {
 				this.options.links[index].className="";
 			 }
 			
 			//add the active class to the current thumb
-			link.parentNode.className = "active";
+			link.className = "active";
 		    }
-		
 		
 		    this.nextPicture = function () {
 			    var nextLink = getNextSibling(el.getElementsByClassName("active")[0]);
-			    if (nextLink) {
-				    nextLink = nextLink.getElementsByTagName('a')[0];
-			    } else {
-				    nextLink = this.options.links[0].getElementsByTagName('a')[0];
+			    if (!nextLink) {
+				    nextLink = this.options.links[0];
 			    }
 			    this.loadPicture(nextLink);
 		    }
 		
 		    this.prevPicture = function () {
 			    var prevLink = getPrevSibling(el.getElementsByClassName("active")[0]);
-			    if (prevLink) {
-				    prevLink = prevLink.getElementsByTagName('a')[0];
-			    } else {
+			    if (!prevLink) {
 				    var lastLink;
 				    lastLink = this.options.links.length - 1;
-				    prevLink = this.options.links[lastLink].getElementsByTagName('a')[0];
+				    prevLink = this.options.links[lastLink];
 			    }
 			    this.loadPicture(prevLink);
 		    }
 		    
 		    return this;
 		}
-		
-	    
-		var autoPlay = false, interval = 4000;
-		
-		window.onload = function() {
-			//get galleries and define variables
-			var galleries = document.getElementsByClassName("gallery-wrapper"), index;
-			
-			//for every gallery
-			for (index = 0; index < galleries.length; ++index) {
-				new Gallery(galleries[index]);
-			}
-		}
     </script>
 </head>
 
 <body>
-
 	<div class="gallery-wrapper">
 		<figure class="big-picture" >
 			<div class="loading"></div>
@@ -455,6 +440,14 @@
 		</nav>
 	</div>
 
-
+	<script>
+		//get galleries and define variables
+		var galleries = document.getElementsByClassName("gallery-wrapper"), index;
+		
+		//for every gallery
+		for (index = 0; index < galleries.length; ++index) {
+			new Gallery(galleries[index]);
+		}
+	</script>
 </body>
 </html>
